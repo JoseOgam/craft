@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 var validator = require("validator");
-
+// user model structure
 var User = mongoose.model("User", {
   name: {
     type: String,
