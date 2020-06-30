@@ -3,7 +3,7 @@ const User = require("./models/user");
 require("./db/mongoose");
 
 var app = express();
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3001;
 app.use(express.json());
 
 //create user using post method
