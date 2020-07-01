@@ -61,4 +61,14 @@ router.patch("/users/:id", async (req, res) => {
   }
 });
 
+//login user
+router.post("/users/login", async (req, res) => {
+  try {
+    var user = await User.findByCredentials(req.body.email, req.body.password);
+    res.send(user);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
 module.exports = router;
