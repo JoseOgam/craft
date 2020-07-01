@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var User = require("../models/user");
+const { update } = require("../models/user");
 
 //create user using post method(Create)
 router.post("/users", async (req, res) => {
@@ -28,6 +29,29 @@ router.delete("/users/:id", async (req, res) => {
   var id = req.params.id;
   try {
     var user = await User.findByIdAndDelete(id);
+    if (!user) {
+      res.status(404).send();
+    }
+    res.send(user);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
+//Update Method
+router.patch("/users/:id", async (req, res) => {
+  var updates = Object.keys(req.body);
+  var allowesUpdates = ["name", "email", "age", "password"];
+  var validOperation = updates.every((update) =>
+    allowesUpdates.includes(update)
+  );
+  if (!validOperation) {
+    return res.status(400).send({ error: "invalid operation" });
+  }
+  try {
+    var user = await User.findById(req.params.id);
+    updates.forEach((update) => (user[update] = req.body[update]));
+    await user.save();
     if (!user) {
       res.status(404).send();
     }

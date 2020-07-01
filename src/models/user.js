@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var validator = require("validator");
 // user model structure
-var User = mongoose.model("User", {
+var userSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -27,6 +27,18 @@ var User = mongoose.model("User", {
       }
     },
   },
+  password: {
+    type: String,
+    required: true,
+    trim: true,
+    minLength: 6,
+    validate(value) {
+      if (value.toLowerCase().includes("password")) {
+        throw new Error("wrong password");
+      }
+    },
+  },
 });
+var User = mongoose.model("User", userSchema);
 
 module.exports = User;
